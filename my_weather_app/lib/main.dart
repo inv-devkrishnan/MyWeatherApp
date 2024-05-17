@@ -1,8 +1,16 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:my_weather_app/pages/login_page.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:my_weather_app/firebase_options.dart';
+import 'package:my_weather_app/src/core/routing/app_router.dart';
+import 'package:my_weather_app/src/core/theme/theme.dart';
 
-void main() {
-  runApp(const MyApp());
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
+  runApp(const ProviderScope(child: MyApp()));
 }
 
 class MyApp extends StatelessWidget {
@@ -11,18 +19,12 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    AppRouter appRouter = AppRouter();
+    return MaterialApp.router(
+      routerConfig: appRouter.config(),
       title: 'MyWeatherApp',
-      theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-        useMaterial3: true,
-      ),
-      home: const LoginPage(),
+      debugShowCheckedModeBanner: false,
+      theme: AppTheme().appTheme(context),
     );
   }
 }
-
-
-
-
-
