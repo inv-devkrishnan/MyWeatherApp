@@ -5,6 +5,8 @@ import 'package:my_weather_app/firebase_options.dart';
 import 'package:my_weather_app/src/core/routing/app_router.dart';
 import 'package:my_weather_app/src/core/theme/theme.dart';
 
+import 'src/core/globals/global_keys.dart';
+
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
@@ -22,6 +24,7 @@ class MyApp extends StatelessWidget {
     AppRouter appRouter = AppRouter();
     return MaterialApp.router(
       routerConfig: appRouter.config(),
+      scaffoldMessengerKey: scaffoldkey,
       title: 'MyWeatherApp',
       debugShowCheckedModeBanner: false,
       theme: AppTheme().appTheme(context),

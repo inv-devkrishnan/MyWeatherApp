@@ -1,15 +1,15 @@
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/material.dart';
+
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:my_weather_app/src/core/error/exception.dart';
 
 abstract interface class LoginRemoteDataSource {
-  Future<void> loginWithGoogle();
+  Future<UserCredential> loginWithGoogle();
 }
 
 class LoginRemoteDateSourceImpl implements LoginRemoteDataSource {
   @override
-  Future<void> loginWithGoogle() async {
+  Future<UserCredential> loginWithGoogle() async {
     try {
       // Trigger the authentication flow
       final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
@@ -23,12 +23,9 @@ class LoginRemoteDateSourceImpl implements LoginRemoteDataSource {
         accessToken: googleAuth?.accessToken,
         idToken: googleAuth?.idToken,
       );
-      await FirebaseAuth.instance.signInWithCredential(credential);
-      debugPrint("login Successful");
+      return await FirebaseAuth.instance.signInWithCredential(credential);
     } catch (e) {
-      debugPrint("login Failed");
-      debugPrint(e.toString());
-      throw ServerException(e.toString());
+      throw ServerException(e);
     }
   }
 }
