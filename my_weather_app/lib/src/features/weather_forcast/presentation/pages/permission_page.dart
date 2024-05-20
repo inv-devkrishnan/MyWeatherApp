@@ -1,8 +1,12 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
+import 'package:location/location.dart';
 import 'package:lottie/lottie.dart';
+import 'package:my_weather_app/src/core/permission/permission.dart';
 import 'package:my_weather_app/src/core/responsive/safe_area.dart';
+import 'package:my_weather_app/src/core/routing/app_router.gr.dart';
+import 'package:my_weather_app/src/shared/exit_app.dart';
 
 @RoutePage()
 class PermissionPage extends StatelessWidget {
@@ -10,6 +14,7 @@ class PermissionPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final location = LocationPermission(Location());
     return Scaffold(
       body: ResponsiveSafeArea(
           builder: (context, size) => Padding(
@@ -29,15 +34,27 @@ class PermissionPage extends StatelessWidget {
                           fontWeight: FontWeight.w900,
                         ),
                       ),
-                      SingleChildScrollView(
-                        child: Padding(
-                          padding: EdgeInsets.only(top: size.height * 0.05),
-                          child: const AutoSizeText(
-                            "MyWeatherApp needs access to your real-time location to provide you with the latest weather updates for your area. Please grant MyWeatherApp the necessary location permissions.",
-                            style: TextStyle(
-                                fontSize: 16, fontWeight: FontWeight.w500),
-                            textAlign: TextAlign.justify,
-                          ),
+                      Padding(
+                        padding: EdgeInsets.only(top: size.height * 0.05),
+                        child: Column(
+                          children: [
+                            const AutoSizeText(
+                              "MyWeatherApp needs access to your real-time location to provide you with the latest weather updates for your area. Please grant MyWeatherApp the necessary location permissions.",
+                              style: TextStyle(
+                                  fontSize: 16, fontWeight: FontWeight.w500),
+                              textAlign: TextAlign.justify,
+                            ),
+                            Padding(
+                              padding:
+                                  EdgeInsets.only(top: size.height * 0.025),
+                              child: const AutoSizeText(
+                                "If location prompt is not showing up please enable location from settings.",
+                                style: TextStyle(
+                                    fontSize: 16, fontWeight: FontWeight.w500),
+                                textAlign: TextAlign.justify,
+                              ),
+                            ),
+                          ],
                         ),
                       ),
                       Padding(
@@ -47,14 +64,22 @@ class PermissionPage extends StatelessWidget {
                               Icons.location_on,
                               color: Colors.white,
                             ),
-                            onPressed: () {},
+                            onPressed: () async {
+                              bool res = await location.requestPermission();
+                              if (res && context.mounted) {
+                                AutoRouter.of(context)
+                                    .replace(const HomeRoute());
+                              }
+                            },
                             label: const Text("Allow Location")),
                       ),
                       Expanded(
                         child: Align(
                           alignment: Alignment.bottomLeft,
                           child: TextButton(
-                              onPressed: () {},
+                              onPressed: () async {
+                                await exitApp();
+                              },
                               child: const Text(
                                 "Exit Application",
                                 style: TextStyle(),
