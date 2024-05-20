@@ -26,6 +26,7 @@ class LoginRemoteDateSourceImpl implements LoginRemoteDataSource {
       await FirebaseAuth.instance.signInWithCredential(credential);
       debugPrint("login Successful");
     } catch (e) {
+      debugPrint("login Failed");
       debugPrint(e.toString());
       throw ServerException(e.toString());
     }
