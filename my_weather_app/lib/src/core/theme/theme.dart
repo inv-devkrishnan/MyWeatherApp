@@ -10,6 +10,9 @@ class AppTheme {
         textTheme: GoogleFonts.poppinsTextTheme(Theme.of(context).textTheme),
         filledButtonTheme: FilledButtonThemeData(
             style: FilledButton.styleFrom(
-                backgroundColor: AppColors.primaryColor)));
+                backgroundColor: AppColors.primaryColor)),
+        textButtonTheme: TextButtonThemeData(
+            style:
+                TextButton.styleFrom(foregroundColor: AppColors.primaryColor)));
   }
 }
