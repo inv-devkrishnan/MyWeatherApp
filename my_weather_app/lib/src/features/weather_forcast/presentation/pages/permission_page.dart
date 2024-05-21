@@ -3,7 +3,7 @@ import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:location/location.dart';
 import 'package:lottie/lottie.dart';
-import 'package:my_weather_app/src/core/permission/permission.dart';
+import 'package:my_weather_app/src/core/location/geo_location.dart';
 import 'package:my_weather_app/src/core/responsive/safe_area.dart';
 import 'package:my_weather_app/src/core/routing/app_router.gr.dart';
 import 'package:my_weather_app/src/shared/exit_app.dart';
@@ -14,7 +14,7 @@ class PermissionPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final location = LocationPermission(Location());
+    final location = GeoLocation(Location());
     return Scaffold(
       body: ResponsiveSafeArea(
           builder: (context, size) => Padding(
@@ -67,8 +67,7 @@ class PermissionPage extends StatelessWidget {
                             onPressed: () async {
                               bool res = await location.requestPermission();
                               if (res && context.mounted) {
-                                AutoRouter.of(context)
-                                    .replace(const HomeRoute());
+                                AutoRouter.of(context).replace(HomeRoute());
                               }
                             },
                             label: const Text("Allow Location")),

@@ -33,6 +33,7 @@ lib/firebase_options.dart
 .pub/
 /build/
 
+
 # Symbolication related
 app.*.symbols
 
@@ -47,3 +48,6 @@ app.*.map.json
 #firebase api keys
 firebase_options.dart
 /android/app/google-services.json
+
+#other api keys
+/lib/src/core/secrets/api_keys.dart

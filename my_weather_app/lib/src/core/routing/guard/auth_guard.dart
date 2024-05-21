@@ -3,7 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:location/location.dart';
 import 'package:my_weather_app/src/core/auth/authentication.dart';
-import 'package:my_weather_app/src/core/permission/permission.dart';
+import 'package:my_weather_app/src/core/location/geo_location.dart';
 import 'package:my_weather_app/src/core/routing/app_router.gr.dart';
 
 class AuthGuard extends AutoRouteGuard {
@@ -12,7 +12,7 @@ class AuthGuard extends AutoRouteGuard {
   void onNavigation(NavigationResolver resolver, StackRouter router) async {
     debugPrint("inside authguard");
     Authentication auth = Authentication(FirebaseAuth.instance);
-    LocationPermission permission = LocationPermission(Location());
+    GeoLocation permission = GeoLocation(Location());
     if (!auth.isUserLoggedIn()) {
       debugPrint("User is not logged in redirecting to login page");
       router.popAndPush(const LoginRoute());

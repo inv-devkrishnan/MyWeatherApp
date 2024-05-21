@@ -8,7 +8,12 @@ class AppRouter extends $AppRouter {
   @override
   List<AutoRoute> get routes => [
         AutoRoute(page: LoginRoute.page),
-        AutoRoute(page: HomeRoute.page, initial: true, guards: [AuthGuard()]),
+        AutoRoute(
+          page: HomeRoute.page,
+          initial: true,
+          guards: [AuthGuard()],
+          path: "/homePage/:loc",
+        ),
         AutoRoute(page: SetLocationRoute.page),
         AutoRoute(
           page: PermissionRoute.page,

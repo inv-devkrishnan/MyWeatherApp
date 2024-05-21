@@ -25,7 +25,7 @@ class LoginController extends StateNotifier<AsyncValue<UserCredential?>> {
     // sign in and update the state (data or error)
     state = await AsyncValue.guard(authRepository.loginWithGoogle);
     if (context.mounted && !state.hasError) {
-      AutoRouter.of(context).replace(const HomeRoute());
+      AutoRouter.of(context).replace(HomeRoute());
     }
   }
 }

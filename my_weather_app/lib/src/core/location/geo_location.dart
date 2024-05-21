@@ -1,9 +1,24 @@
 import 'package:flutter/material.dart';
 import 'package:location/location.dart';
+import 'package:my_weather_app/src/core/error/exception.dart';
 
-class LocationPermission {
+class GeoLocation {
+  /// GeoLocation class contains the methods to access location services
   final Location location;
-  LocationPermission(this.location);
+  GeoLocation(this.location);
+
+  Future<String> getCurrentLocation() async {
+    // function to get current location
+    try {
+      final LocationData locationData = await location.getLocation();
+      final String currentLocation =
+          "${locationData.latitude},${locationData.longitude}";
+      return currentLocation;
+    } catch (e) {
+      throw ServerException(e);
+    }
+  }
+
   Future<bool> checkLocationPermission() async {
     // function to check wether the device have location permission returns true if there is location permission
     final permission = await location.hasPermission();

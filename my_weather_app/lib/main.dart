@@ -8,6 +8,7 @@ import 'package:my_weather_app/src/core/theme/theme.dart';
 
 import 'src/core/globals/global_keys.dart';
 
+// Your providers
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
