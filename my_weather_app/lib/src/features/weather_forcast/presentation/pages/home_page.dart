@@ -8,12 +8,46 @@ import 'package:my_weather_app/src/core/routing/app_router.gr.dart';
 import 'package:my_weather_app/src/features/weather_forcast/presentation/providers/weather_provider.dart';
 
 @RoutePage()
-class HomePage extends ConsumerWidget {
+class HomePage extends ConsumerStatefulWidget {
   final String? loc;
   const HomePage({super.key, @PathParam('loc') this.loc});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  ConsumerState<HomePage> createState() => _HomePageState();
+}
+
+class _HomePageState extends ConsumerState<HomePage> {
+  late final AppLifecycleListener _listener;
+
+  @override
+  void initState() {
+    super.initState();
+
+    _listener = AppLifecycleListener(
+      onStateChange: _onStateChanged,
+    );
+  }
+
+  @override
+  void dispose() {
+    _listener.dispose();
+
+    super.dispose();
+  }
+
+  void _onStateChanged(AppLifecycleState state) {
+    if (state == AppLifecycleState.resumed) {
+      _onResumed();
+    }
+  }
+
+  void _onResumed() {
+    debugPrint("App resumed");
+    ref.invalidate(weatherProvider(widget.loc));
+  }
+
+  @override
+  Widget build(BuildContext context) {
     return Scaffold(
       body: ResponsiveSafeArea(
           builder: (context, size) => Column(
@@ -29,7 +63,7 @@ class HomePage extends ConsumerWidget {
                     },
                     child: const Text("logout"),
                   ),
-                  ref.watch(weatherProvider(loc)).when(
+                  ref.watch(weatherProvider(widget.loc)).when(
                         skipLoadingOnRefresh: false,
                         data: (data) {
                           return Text(data.toString());

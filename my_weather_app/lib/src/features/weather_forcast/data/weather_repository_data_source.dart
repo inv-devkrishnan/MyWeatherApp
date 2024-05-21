@@ -1,4 +1,5 @@
 import 'package:flutter/foundation.dart';
+import 'package:my_weather_app/src/core/config/config.dart';
 import 'package:my_weather_app/src/core/error/exception.dart';
 import 'package:my_weather_app/src/core/location/geo_location.dart';
 import 'package:my_weather_app/src/core/secrets/api_keys.dart';
@@ -23,8 +24,7 @@ class WeatherRepositoryImpl implements WeatherRepository {
       currentLocation = location;
     }
     try {
-      final response = await dio
-          .get("https://api.weatherapi.com/v1/forecast.json", queryParameters: {
+      final response = await dio.get(weatherAPIURL, queryParameters: {
         "key": weatherAPIkey,
         "q": currentLocation,
         "days": 4
