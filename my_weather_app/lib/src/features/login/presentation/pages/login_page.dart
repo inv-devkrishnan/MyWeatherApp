@@ -19,45 +19,50 @@ class LoginPage extends StatelessWidget {
       body: ResponsiveSafeArea(
           builder: (context, size) => Padding(
                 padding: const EdgeInsets.all(16.0),
-                child: Stack(
-                  children: [
-                    Lottie.asset(
-                      "assets/animation/sun_cloud_anim.json",
-                    ),
-                    const Center(
-                      child: Column(
-                        children: [
-                          Expanded(
-                            child: Align(
-                              alignment: Alignment.center,
-                              child: AutoSizeText(
-                                textAlign: TextAlign.center,
-                                "MyWeatherApp",
-                                maxFontSize: 48,
-                                maxLines: 1,
-                                style: TextStyle(
-                                  fontSize: 42,
-                                  color: Colors.white,
-                                  fontWeight: FontWeight.bold,
+                child: SizedBox(
+                  height: size.height,
+                  child: Center(
+                    child: Column(
+                      children: [
+                        SizedBox(
+                          height: size.height * 0.8,
+                          child: Column(
+                            children: [
+                              Lottie.asset(
+                                "assets/animation/sun_cloud_anim.json",
+                              ),
+                              const Align(
+                                alignment: Alignment.center,
+                                child: AutoSizeText(
+                                  textAlign: TextAlign.center,
+                                  "MyWeatherApp",
+                                  maxFontSize: 48,
+                                  maxLines: 1,
+                                  style: TextStyle(
+                                    fontSize: 42,
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.bold,
+                                  ),
                                 ),
                               ),
-                            ),
+                              const Text(
+                                "Sign in to continue",
+                                style: TextStyle(
+                                    color: Colors.white, fontSize: 16),
+                              ),
+                            ],
                           ),
-                          const Text(
-                            "Sign in to continue",
-                            style: TextStyle(color: Colors.white, fontSize: 16),
+                        ),
+                        Padding(
+                          padding: EdgeInsets.only(bottom: size.height * 0.05),
+                          child: const Align(
+                            alignment: Alignment.bottomCenter,
+                            child: GoogleSignInButton(),
                           ),
-                        ],
-                      ),
+                        )
+                      ],
                     ),
-                    Padding(
-                      padding: EdgeInsets.only(bottom: size.height * 0.05),
-                      child: const Align(
-                        alignment: Alignment.bottomCenter,
-                        child: GoogleSignInButton(),
-                      ),
-                    )
-                  ],
+                  ),
                 ),
               )),
     );
