@@ -3,9 +3,10 @@ import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:location/location.dart';
 import 'package:lottie/lottie.dart';
-import 'package:my_weather_app/src/core/location/geo_location.dart';
+import 'package:my_weather_app/src/core/services/geo_location.dart';
 import 'package:my_weather_app/src/core/responsive/safe_area.dart';
 import 'package:my_weather_app/src/core/routing/app_router.gr.dart';
+import 'package:my_weather_app/src/core/theme/app_colors.dart';
 import 'package:my_weather_app/src/shared/exit_app.dart';
 
 @RoutePage()
@@ -16,6 +17,7 @@ class PermissionPage extends StatelessWidget {
   Widget build(BuildContext context) {
     final location = GeoLocation(Location());
     return Scaffold(
+      backgroundColor: AppColors.primaryColor,
       body: ResponsiveSafeArea(
           builder: (context, size) => Padding(
                 padding: EdgeInsets.symmetric(
@@ -62,7 +64,7 @@ class PermissionPage extends StatelessWidget {
                         child: FilledButton.icon(
                             icon: const Icon(
                               Icons.location_on,
-                              color: Colors.white,
+                              color: AppColors.primaryColor,
                             ),
                             onPressed: () async {
                               bool res = await location.requestPermission();

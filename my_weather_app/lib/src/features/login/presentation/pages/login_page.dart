@@ -15,7 +15,7 @@ class LoginPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppColors.loginBackground,
+      backgroundColor: AppColors.primaryColor,
       body: ResponsiveSafeArea(
           builder: (context, size) => Padding(
                 padding: const EdgeInsets.all(16.0),
@@ -26,13 +26,22 @@ class LoginPage extends StatelessWidget {
                     ),
                     const Center(
                       child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          AutoSizeText(
-                            "MyWeatherApp",
-                            maxLines: 1,
-                            maxFontSize: 48,
-                            style: TextStyle(fontSize: 48, color: Colors.white),
+                          Expanded(
+                            child: Align(
+                              alignment: Alignment.center,
+                              child: AutoSizeText(
+                                textAlign: TextAlign.center,
+                                "MyWeatherApp",
+                                maxFontSize: 48,
+                                maxLines: 1,
+                                style: TextStyle(
+                                  fontSize: 42,
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                            ),
                           ),
                           const Text(
                             "Sign in to continue",

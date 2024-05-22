@@ -4,18 +4,22 @@ import 'dart:convert';
 class WeatherCondition {
   final String text;
   final String icon;
+  final int code;
   WeatherCondition({
     required this.text,
     required this.icon,
+    required this.code,
   });
 
   WeatherCondition copyWith({
     String? text,
     String? icon,
+    int? code,
   }) {
     return WeatherCondition(
       text: text ?? this.text,
       icon: icon ?? this.icon,
+      code: code ?? this.code,
     );
   }
 
@@ -23,6 +27,7 @@ class WeatherCondition {
     return <String, dynamic>{
       'text': text,
       'icon': icon,
+      'code': code,
     };
   }
 
@@ -30,6 +35,7 @@ class WeatherCondition {
     return WeatherCondition(
       text: map['text'] as String,
       icon: map['icon'] as String,
+      code: map['code'] as int,
     );
   }
 
@@ -39,15 +45,16 @@ class WeatherCondition {
       WeatherCondition.fromMap(json.decode(source) as Map<String, dynamic>);
 
   @override
-  String toString() => 'WeatherCondition(text: $text, icon: $icon)';
+  String toString() =>
+      'WeatherCondition(text: $text, icon: $icon, code: $code)';
 
   @override
   bool operator ==(covariant WeatherCondition other) {
     if (identical(this, other)) return true;
 
-    return other.text == text && other.icon == icon;
+    return other.text == text && other.icon == icon && other.code == code;
   }
 
   @override
-  int get hashCode => text.hashCode ^ icon.hashCode;
+  int get hashCode => text.hashCode ^ icon.hashCode ^ code.hashCode;
 }

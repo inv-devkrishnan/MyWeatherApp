@@ -7,12 +7,18 @@ class AppTheme {
     return ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: AppColors.primaryColor),
         useMaterial3: true,
-        textTheme: GoogleFonts.poppinsTextTheme(Theme.of(context).textTheme),
+        textTheme:
+            GoogleFonts.poppinsTextTheme(Theme.of(context).textTheme.apply(
+                  bodyColor: AppColors.primaryTextColor,
+                  displayColor: AppColors.primaryTextColor,
+                )),
         filledButtonTheme: FilledButtonThemeData(
             style: FilledButton.styleFrom(
-                backgroundColor: AppColors.primaryColor)),
+          backgroundColor: AppColors.primaryTextColor,
+          foregroundColor: AppColors.primaryColor,
+        )),
         textButtonTheme: TextButtonThemeData(
-            style:
-                TextButton.styleFrom(foregroundColor: AppColors.primaryColor)));
+            style: TextButton.styleFrom(
+                foregroundColor: AppColors.primaryTextColor)));
   }
 }

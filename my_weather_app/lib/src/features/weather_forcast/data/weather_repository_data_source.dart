@@ -1,7 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:my_weather_app/src/core/config/config.dart';
 import 'package:my_weather_app/src/core/error/exception.dart';
-import 'package:my_weather_app/src/core/location/geo_location.dart';
+import 'package:my_weather_app/src/core/services/geo_location.dart';
 import 'package:my_weather_app/src/core/secrets/api_keys.dart';
 import 'package:my_weather_app/src/features/weather_forcast/domain/models/weather_data_model.dart';
 import 'package:my_weather_app/src/features/weather_forcast/domain/repository/weather_repository.dart';
@@ -18,9 +18,10 @@ class WeatherRepositoryImpl implements WeatherRepository {
    */
 
     late final String currentLocation;
-    if (location == null) {
+    if (location == null || location == ":loc") {
       currentLocation = await geoLocation.getCurrentLocation();
     } else {
+      debugPrint("set Location : $location");
       currentLocation = location;
     }
     try {
