@@ -22,7 +22,7 @@ class WeatherRepositoryImpl implements WeatherRepository {
 
     late final String currentLocation;
     if (location == null || location == ":loc") {
-      currentLocation = await geoLocation.getCurrentLocation();
+      currentLocation = await geoLocation.getLocationCurrent();
     } else {
       debugPrint("set Location : $location");
       currentLocation = location;

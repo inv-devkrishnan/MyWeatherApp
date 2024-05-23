@@ -1,7 +1,6 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
-import 'package:location/location.dart';
 import 'package:lottie/lottie.dart';
 import 'package:my_weather_app/src/core/services/geo_location.dart';
 import 'package:my_weather_app/src/core/responsive/safe_area.dart';
@@ -15,7 +14,7 @@ class PermissionPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final location = GeoLocation(Location());
+    final location = GeoLocation();
     return Scaffold(
       backgroundColor: AppColors.primaryColor,
       body: ResponsiveSafeArea(

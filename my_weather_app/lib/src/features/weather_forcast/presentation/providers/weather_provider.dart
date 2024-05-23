@@ -1,7 +1,6 @@
 import 'dart:async';
 import 'package:dio/dio.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:location/location.dart';
 import 'package:my_weather_app/src/core/config/config.dart';
 import 'package:my_weather_app/src/core/services/geo_location.dart';
 import 'package:my_weather_app/src/features/weather_forcast/data/weather_repository_data_source.dart';
@@ -28,7 +27,7 @@ final weatherProvider =
       try {
         SharedPreferences prefs = await SharedPreferences.getInstance();
         final weatherData =
-            await WeatherRepositoryImpl(Dio(), GeoLocation(Location()), prefs)
+            await WeatherRepositoryImpl(Dio(), GeoLocation(), prefs)
                 .getCurrentWeather(location);
         yield weatherData;
       } catch (e) {
