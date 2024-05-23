@@ -3,6 +3,7 @@ import 'package:my_weather_app/src/core/services/date_formatter.dart';
 import 'package:my_weather_app/src/core/theme/app_colors.dart';
 import 'package:my_weather_app/src/features/weather_forcast/domain/models/weather_data_model.dart';
 import 'package:my_weather_app/src/features/weather_forcast/domain/models/weather_forcast_day_model.dart';
+import 'package:transparent_image/transparent_image.dart';
 
 class FutureWeatherTile extends StatefulWidget {
   final WeatherData data;
@@ -41,6 +42,8 @@ class _FutureWeatherTileState extends State<FutureWeatherTile> {
                   style: textHeaderStyle(),
                 ),
                 Image.network(
+                  errorBuilder: (context, error, stackTrace) =>
+                      Image(image: MemoryImage(kTransparentImage)),
                   'http:${day.weatherCondition.icon}',
                   height: 32,
                   width: 32,
