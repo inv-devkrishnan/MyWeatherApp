@@ -45,8 +45,12 @@ class GoogleSignInButton extends ConsumerWidget {
         padding: const EdgeInsets.symmetric(horizontal: 0, vertical: 16),
         child: Builder(builder: (context) {
           if (state.isLoading) {
-            return const CircularProgressIndicator(
-              color: Colors.white,
+            return const SizedBox(
+              height: 32,
+              width: 32,
+              child: CircularProgressIndicator(
+                color: Colors.white,
+              ),
             );
           } else {
             return Row(mainAxisSize: MainAxisSize.min, children: [
