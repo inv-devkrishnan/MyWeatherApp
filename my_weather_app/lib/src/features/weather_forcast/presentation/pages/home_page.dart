@@ -15,6 +15,8 @@ import 'package:my_weather_app/src/features/weather_forcast/presentation/widgets
 import 'package:my_weather_app/src/features/weather_forcast/presentation/widgets/sub_heading.dart';
 import 'package:my_weather_app/src/features/weather_forcast/presentation/widgets/weather_info_blocks.dart';
 
+import '../providers/location_provider.dart';
+
 @RoutePage()
 class HomePage extends ConsumerStatefulWidget {
   final String? loc;
@@ -26,11 +28,11 @@ class HomePage extends ConsumerStatefulWidget {
 
 class _HomePageState extends ConsumerState<HomePage> {
   late final AppLifecycleListener _listener;
-
+  String? loadLocation;
   @override
   void initState() {
     super.initState();
-
+    loadLocation = widget.loc;
     _listener = AppLifecycleListener(
       onStateChange: _onStateChanged,
     );
@@ -51,17 +53,16 @@ class _HomePageState extends ConsumerState<HomePage> {
 
   void _onResumed() {
     debugPrint("App resumed");
-    ref.invalidate(weatherProvider(widget.loc));
+    ref.invalidate(weatherProvider);
   }
 
   @override
   Widget build(BuildContext context) {
+    final String place = ref.watch(placeProvider);
     return Scaffold(
       backgroundColor: AppColors.primaryColor,
       body: ResponsiveSafeArea(
-          builder: (context, size) => ref
-              .watch(weatherProvider(widget.loc))
-              .when(
+          builder: (context, size) => ref.watch(weatherProvider(place)).when(
                 skipLoadingOnRefresh: false,
                 data: (data) {
                   return Stack(children: [
@@ -72,11 +73,13 @@ class _HomePageState extends ConsumerState<HomePage> {
                     SingleChildScrollView(
                       child: Column(
                         children: [
-                          const Row(
+                          Row(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
-                              ChangeLocationBtn(),
-                              LogoutBtn(),
+                              ChangeLocationBtn(
+                                size: size,
+                              ),
+                              const LogoutBtn(),
                             ],
                           ),
                           Padding(

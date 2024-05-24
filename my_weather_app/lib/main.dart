@@ -1,23 +1,20 @@
-import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:my_weather_app/firebase_options.dart';
+import 'package:my_weather_app/src/core/init_dependencies.dart';
 import 'package:my_weather_app/src/core/routing/app_router.dart';
+import 'package:my_weather_app/src/core/services/db_helper.dart';
 import 'package:my_weather_app/src/core/theme/text_scaler.dart';
 import 'package:my_weather_app/src/core/theme/theme.dart';
+import 'package:sqflite/sqflite.dart';
 
 import 'src/core/globals/global_keys.dart';
 
-// Your providers
+late final Database? db;
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  SystemChrome.setPreferredOrientations([
-    DeviceOrientation.portraitUp,
-  ]);
-  await Firebase.initializeApp(
-    options: DefaultFirebaseOptions.currentPlatform,
-  );
+  await InitDependencies.initFirebase();
+  db = await DatabaseHelper.instance.database;
+  InitDependencies.setDeviceOrientation();
   runApp(const ProviderScope(child: MyApp()));
 }
 

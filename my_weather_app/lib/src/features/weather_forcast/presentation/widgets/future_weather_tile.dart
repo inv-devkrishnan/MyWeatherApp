@@ -96,8 +96,7 @@ class _FutureWeatherTileState extends State<FutureWeatherTile> {
   TextStyle textChildStyle() {
     // text style for child
     return const TextStyle(
-        color: AppColors.primaryTextColor,
-        fontSize: 16,
-        fontWeight: FontWeight.bold);
+      color: AppColors.primaryTextColor,
+    );
   }
 }

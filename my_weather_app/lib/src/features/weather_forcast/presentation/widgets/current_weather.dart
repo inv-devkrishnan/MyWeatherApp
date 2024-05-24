@@ -24,7 +24,7 @@ class CurrentWeather extends StatelessWidget {
                 AutoSizeText(
                   maxFontSize: 42,
                   data.location.name,
-                  maxLines: 2,
+                  maxLines: 1,
                   style: const TextStyle(
                     fontSize: 32,
                     fontWeight: FontWeight.bold,

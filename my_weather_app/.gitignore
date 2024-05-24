@@ -51,3 +51,4 @@ firebase_options.dart
 
 #other api keys
 /lib/src/core/secrets/api_keys.dart
+db/

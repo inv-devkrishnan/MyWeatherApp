@@ -30,8 +30,8 @@ class WeatherInfoBlocks extends StatelessWidget {
               children: [
                 SvgPicture.asset(
                   imagePath,
-                  height: 45,
-                  width: 45,
+                  height: 32,
+                  width: 32,
                 ),
                 Padding(
                   padding: const EdgeInsets.only(top: 8.0),

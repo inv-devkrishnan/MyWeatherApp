@@ -40,6 +40,7 @@ class WeatherRepositoryImpl implements WeatherRepository {
     } on DioException catch (e) {
       if (e.type == DioExceptionType.connectionError ||
           e.type == DioExceptionType.connectionTimeout) {
+        // if connection timeout or connectionError (offline) then loads cached data
         final String? cachedData = prefs.getString("weather_cache");
         if (cachedData != null) {
           debugPrint(
