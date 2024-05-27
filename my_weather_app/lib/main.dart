@@ -1,3 +1,4 @@
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:my_weather_app/src/core/init_dependencies.dart';
@@ -12,9 +13,10 @@ import 'src/core/globals/global_keys.dart';
 late final Database? db;
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await InitDependencies.initFirebase();
-  db = await DatabaseHelper.instance.database;
-  InitDependencies.setDeviceOrientation();
+  await InitDependencies.initFirebase(); // initialize firebase auth
+  db = await DatabaseHelper.instance.database; // initialize db
+  InitDependencies.setDeviceOrientation(); // sets device orientation
+  InitDependencies(Dio()).initLocationList(); // gets location list
   runApp(const ProviderScope(child: MyApp()));
 }
 

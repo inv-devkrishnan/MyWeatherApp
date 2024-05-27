@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:my_weather_app/src/core/responsive/safe_area.dart';
 import 'package:my_weather_app/src/core/theme/app_colors.dart';
+import 'package:my_weather_app/src/features/location_change/presentation/widgets/fav_btn.dart';
 import 'package:my_weather_app/src/features/weather_forcast/presentation/providers/location_provider.dart';
 
 import '../../../weather_forcast/presentation/providers/location_list_provider.dart';
@@ -56,13 +57,7 @@ class _SetLocationPageState extends ConsumerState<SetLocationPage> {
                                     style: const TextStyle(
                                         color: AppColors.primaryTextColor),
                                   ),
-                                  trailing: IconButton(
-                                    icon: const Icon(
-                                      Icons.favorite_border_rounded,
-                                      color: AppColors.primaryTextColor,
-                                    ),
-                                    onPressed: () {},
-                                  ),
+                                  trailing: FavBtn(data.places[index]),
                                   onTap: () {
                                     ref.read(placeProvider.notifier).state =
                                         data.places[index];
