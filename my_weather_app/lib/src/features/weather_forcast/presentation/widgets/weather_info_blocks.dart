@@ -20,18 +20,17 @@ class WeatherInfoBlocks extends StatelessWidget {
     return Card(
       color: AppColors.primaryTransColor,
       child: SizedBox(
-        height: 145,
-        width: 150,
+        width: 140,
         child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 12),
+          padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
           child: Center(
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 SvgPicture.asset(
                   imagePath,
-                  height: 32,
-                  width: 32,
+                  height: 24,
+                  width: 24,
                 ),
                 Padding(
                   padding: const EdgeInsets.only(top: 8.0),

@@ -97,7 +97,7 @@ class _HomePageState extends ConsumerState<HomePage> {
                             padding: EdgeInsets.only(top: size.height * 0.02),
                             child: SizedBox(
                               width: size.width,
-                              height: 150,
+                              height: 120,
                               child: Center(
                                 child: ListView(
                                   shrinkWrap: true,
