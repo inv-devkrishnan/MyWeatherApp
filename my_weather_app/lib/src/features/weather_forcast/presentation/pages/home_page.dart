@@ -127,6 +127,25 @@ class _HomePageState extends ConsumerState<HomePage> {
                                         heading: "Chance of rain",
                                         body:
                                             "${data.forecast.forecastday[0].day.chanceOfRain} %"),
+                                    WeatherInfoBlocks(
+                                        size: size,
+                                        imagePath: "assets/images/sun_rise.svg",
+                                        heading: "Sunrise",
+                                        body: data.forecast.forecastday[0].astro
+                                            .sunrise),
+                                    WeatherInfoBlocks(
+                                        size: size,
+                                        imagePath: "assets/images/sun_set.svg",
+                                        heading: "Sunset",
+                                        body: data.forecast.forecastday[0].astro
+                                            .sunset),
+                                    WeatherInfoBlocks(
+                                        size: size,
+                                        imagePath:
+                                            "assets/images/moon_phase.svg",
+                                        heading: "Moon Phase",
+                                        body: data.forecast.forecastday[0].astro
+                                            .moonPhase),
                                   ],
                                 ),
                               ),

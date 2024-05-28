@@ -105,6 +105,9 @@ flutter:
     -  assets/animation/loading_anim.json
     -  assets/animation/error_anim.json
     -  assets/animation/Animation - 1716378154737.json
+    -  assets/images/sun_rise.svg
+    -  assets/images/sun_set.svg
+    -  assets/images/moon_phase.svg
 
 
   # An image asset can refer to one or more resolution-specific "variants", see

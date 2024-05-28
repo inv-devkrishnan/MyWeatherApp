@@ -111,22 +111,90 @@ class Day {
   }
 }
 
+class Astro {
+  final String sunrise;
+  final String sunset;
+  final String moonPhase;
+  final int isSunUp;
+  Astro({
+    required this.sunrise,
+    required this.sunset,
+    required this.moonPhase,
+    required this.isSunUp,
+  });
+
+  Astro copyWith({
+    String? sunrise,
+    String? sunset,
+    String? moonPhase,
+    int? isSunUp,
+  }) {
+    return Astro(
+      sunrise: sunrise ?? this.sunrise,
+      sunset: sunset ?? this.sunset,
+      moonPhase: moonPhase ?? this.moonPhase,
+      isSunUp: isSunUp ?? this.isSunUp,
+    );
+  }
+
+  Map<String, dynamic> toMap() {
+    return <String, dynamic>{
+      'sunrise': sunrise,
+      'sunset': sunset,
+      'moon_phase': moonPhase,
+      'is_sun_up': isSunUp,
+    };
+  }
+
+  factory Astro.fromMap(Map<String, dynamic> map) {
+    return Astro(
+      sunrise: map['sunrise'] as String,
+      sunset: map['sunset'] as String,
+      moonPhase: map['moon_phase'] as String,
+      isSunUp: map['is_sun_up'] as int,
+    );
+  }
+
+  String toJson() => json.encode(toMap());
+
+  factory Astro.fromJson(String source) =>
+      Astro.fromMap(json.decode(source) as Map<String, dynamic>);
+
+  @override
+  String toString() {
+    return 'Astro(sunrise: $sunrise, sunset: $sunset, moonPhase: $moonPhase, isSunUp: $isSunUp)';
+  }
+
+  @override
+  bool operator ==(covariant Astro other) {
+    if (identical(this, other)) return true;
+
+    return other.sunrise == sunrise &&
+        other.sunset == sunset &&
+        other.moonPhase == moonPhase &&
+        other.isSunUp == isSunUp;
+  }
+
+  @override
+  int get hashCode {
+    return sunrise.hashCode ^
+        sunset.hashCode ^
+        moonPhase.hashCode ^
+        isSunUp.hashCode;
+  }
+}
+
 class ForecastDay {
   final DateTime date;
   final Day day;
-  ForecastDay({
-    required this.date,
-    required this.day,
-  });
+  final Astro astro;
+  ForecastDay({required this.date, required this.day, required this.astro});
 
-  ForecastDay copyWith({
-    DateTime? date,
-    Day? day,
-  }) {
+  ForecastDay copyWith({DateTime? date, Day? day, Astro? astro}) {
     return ForecastDay(
-      date: date ?? this.date,
-      day: day ?? this.day,
-    );
+        date: date ?? this.date,
+        day: day ?? this.day,
+        astro: astro ?? this.astro);
   }
 
   Map<String, dynamic> toMap() {
@@ -142,6 +210,7 @@ class ForecastDay {
           // converting seconds to milliseconds
           (map['date_epoch'] as int) * 1000),
       day: Day.fromMap(map['day'] as Map<String, dynamic>),
+      astro: Astro.fromMap(map['astro'] as Map<String, dynamic>),
     );
   }
 
