@@ -18,6 +18,7 @@ class _FutureWeatherTileState extends State<FutureWeatherTile> {
   @override
   Widget build(BuildContext context) {
     final Day day = widget.data.forecast.forecastday[widget.index].day;
+    final Astro astro = widget.data.forecast.forecastday[widget.index].astro;
     return ClipRRect(
       borderRadius: const BorderRadius.all(Radius.circular(15)),
       child: ExpansionTile(
@@ -60,6 +61,9 @@ class _FutureWeatherTileState extends State<FutureWeatherTile> {
           weatherDataItem(
               "Total precipitation", "${day.totalPrecipitation} mm"),
           weatherDataItem("UV index", "${day.uv}"),
+          weatherDataItem("Sunrise", astro.sunrise),
+          weatherDataItem("Sunset", astro.sunset),
+          weatherDataItem("Moon Phase", astro.moonPhase),
         ],
       ),
     );
