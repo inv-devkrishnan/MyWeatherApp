@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:auto_route/auto_route.dart';
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:internet_connection_checker_plus/internet_connection_checker_plus.dart';
@@ -14,6 +15,7 @@ import 'package:my_weather_app/src/features/weather_forcast/presentation/widgets
 import 'package:my_weather_app/src/features/weather_forcast/presentation/widgets/current_weather.dart';
 import 'package:my_weather_app/src/features/weather_forcast/presentation/widgets/error.dart';
 import 'package:my_weather_app/src/features/weather_forcast/presentation/widgets/future_weather_tile.dart';
+import 'package:my_weather_app/src/features/weather_forcast/presentation/widgets/line_chart.dart';
 import 'package:my_weather_app/src/features/weather_forcast/presentation/widgets/loading.dart';
 import 'package:my_weather_app/src/features/weather_forcast/presentation/widgets/logout_btn.dart';
 import 'package:my_weather_app/src/features/weather_forcast/presentation/widgets/sub_heading.dart';
@@ -183,6 +185,49 @@ class _HomePageState extends ConsumerState<HomePage> {
                                             .moonPhase),
                                   ],
                                 ),
+                              ),
+                            ),
+                          ),
+                          Padding(
+                            padding: EdgeInsets.fromLTRB(
+                                size.width * 0.01,
+                                size.height * 0.02,
+                                size.width * 0.01,
+                                size.height * 0.02),
+                            child: Container(
+                              decoration: const BoxDecoration(
+                                  color: AppColors.primaryTransColor,
+                                  borderRadius:
+                                      BorderRadius.all(Radius.circular(15))),
+                              child: Column(
+                                children: [
+                                  const Padding(
+                                    padding: EdgeInsets.only(top: 8.0),
+                                    child: AutoSizeText(
+                                      "Hourly Forcast",
+                                      style: TextStyle(
+                                        fontSize: 20,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    ),
+                                  ),
+                                  SizedBox(
+                                    height: 200,
+                                    width: size.width,
+                                    child: SingleChildScrollView(
+                                      scrollDirection: Axis.horizontal,
+                                      child: SizedBox(
+                                        width: 1500,
+                                        // child: HourlyForcastWidget(
+                                        //   hourData: data.forecast.forecastday[0].hour,
+                                        // ),
+                                        child: LineChartSample2(
+                                            hourData: data
+                                                .forecast.forecastday[0].hour),
+                                      ),
+                                    ),
+                                  ),
+                                ],
                               ),
                             ),
                           ),

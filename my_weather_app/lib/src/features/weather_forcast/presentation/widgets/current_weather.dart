@@ -64,6 +64,7 @@ class CurrentWeather extends StatelessWidget {
                 Padding(
                   padding: EdgeInsets.only(top: size.height * 0.013),
                   child: AutoSizeText(
+                    textAlign: TextAlign.center,
                     data.current.weatherCondition.text,
                     style: const TextStyle(
                       fontSize: 16,

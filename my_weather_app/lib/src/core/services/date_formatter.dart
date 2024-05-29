@@ -10,4 +10,7 @@ class DateFormatter {
     String dayName = dayFormatter.format(dateTime);
     return dayName;
   }
+
+  static String formatTime(DateTime dateTime) =>
+      DateFormat('HH:mm').format(dateTime);
 }

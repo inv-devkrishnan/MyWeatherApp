@@ -111,6 +111,84 @@ class Day {
   }
 }
 
+class Hour {
+  final DateTime time;
+  final double temp;
+  final WeatherCondition condition;
+  final int chanceOfRain;
+  final double precipitation;
+  Hour(
+      {required this.time,
+      required this.temp,
+      required this.condition,
+      required this.precipitation,
+      required this.chanceOfRain});
+
+  Hour copyWith(
+      {DateTime? time,
+      double? temp,
+      WeatherCondition? condition,
+      double? precipitation,
+      int? chanceOfRain}) {
+    return Hour(
+      time: time ?? this.time,
+      temp: temp ?? this.temp,
+      condition: condition ?? this.condition,
+      precipitation: precipitation ?? this.precipitation,
+      chanceOfRain: chanceOfRain ?? this.chanceOfRain,
+    );
+  }
+
+  Map<String, dynamic> toMap() {
+    return <String, dynamic>{
+      'time': time.millisecondsSinceEpoch,
+      'temp': temp,
+      'condition': condition.toMap(),
+      'precipitation': precipitation,
+    };
+  }
+
+  factory Hour.fromMap(Map<String, dynamic> map) {
+    return Hour(
+      time: DateTime.fromMillisecondsSinceEpoch(
+          (map['time_epoch'] as int) * 1000),
+      temp: map['temp_c'] as double,
+      condition:
+          WeatherCondition.fromMap(map['condition'] as Map<String, dynamic>),
+      precipitation: map['precip_mm'] as double,
+      chanceOfRain: map['chance_of_rain'] as int,
+    );
+  }
+
+  String toJson() => json.encode(toMap());
+
+  factory Hour.fromJson(String source) =>
+      Hour.fromMap(json.decode(source) as Map<String, dynamic>);
+
+  @override
+  String toString() {
+    return 'Hour(time: $time, temp: $temp, condition: $condition, precipitation: $precipitation)';
+  }
+
+  @override
+  bool operator ==(covariant Hour other) {
+    if (identical(this, other)) return true;
+
+    return other.time == time &&
+        other.temp == temp &&
+        other.condition == condition &&
+        other.precipitation == precipitation;
+  }
+
+  @override
+  int get hashCode {
+    return time.hashCode ^
+        temp.hashCode ^
+        condition.hashCode ^
+        precipitation.hashCode;
+  }
+}
+
 class Astro {
   final String sunrise;
   final String sunset;
@@ -188,13 +266,20 @@ class ForecastDay {
   final DateTime date;
   final Day day;
   final Astro astro;
-  ForecastDay({required this.date, required this.day, required this.astro});
+  final List<Hour> hour;
+  ForecastDay(
+      {required this.date,
+      required this.day,
+      required this.astro,
+      required this.hour});
 
-  ForecastDay copyWith({DateTime? date, Day? day, Astro? astro}) {
+  ForecastDay copyWith(
+      {DateTime? date, Day? day, Astro? astro, List<Hour>? hour}) {
     return ForecastDay(
         date: date ?? this.date,
         day: day ?? this.day,
-        astro: astro ?? this.astro);
+        astro: astro ?? this.astro,
+        hour: hour ?? this.hour);
   }
 
   Map<String, dynamic> toMap() {
@@ -211,6 +296,11 @@ class ForecastDay {
           (map['date_epoch'] as int) * 1000),
       day: Day.fromMap(map['day'] as Map<String, dynamic>),
       astro: Astro.fromMap(map['astro'] as Map<String, dynamic>),
+      hour: List<Hour>.from(
+        (map['hour'] as List<dynamic>).map<Hour>(
+          (x) => Hour.fromMap(x as Map<String, dynamic>),
+        ),
+      ),
     );
   }
 
