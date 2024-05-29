@@ -1,8 +1,12 @@
+import 'dart:async';
+
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:internet_connection_checker_plus/internet_connection_checker_plus.dart';
 import 'package:my_weather_app/src/core/responsive/safe_area.dart';
 import 'package:my_weather_app/src/core/theme/app_colors.dart';
+import 'package:my_weather_app/src/features/weather_forcast/presentation/providers/network_check_profile.dart';
 import 'package:my_weather_app/src/features/weather_forcast/presentation/providers/weather_provider.dart';
 import 'package:my_weather_app/src/features/weather_forcast/presentation/service/weather_image.dart';
 import 'package:my_weather_app/src/features/weather_forcast/presentation/widgets/background_image.dart';
@@ -15,6 +19,7 @@ import 'package:my_weather_app/src/features/weather_forcast/presentation/widgets
 import 'package:my_weather_app/src/features/weather_forcast/presentation/widgets/sub_heading.dart';
 import 'package:my_weather_app/src/features/weather_forcast/presentation/widgets/weather_info_blocks.dart';
 
+import '../../../../core/globals/global_keys.dart';
 import '../providers/location_provider.dart';
 
 @RoutePage()
@@ -28,6 +33,7 @@ class HomePage extends ConsumerStatefulWidget {
 
 class _HomePageState extends ConsumerState<HomePage> {
   late final AppLifecycleListener _listener;
+  late final StreamSubscription<InternetStatus> listener;
   String? loadLocation;
   @override
   void initState() {
@@ -36,11 +42,39 @@ class _HomePageState extends ConsumerState<HomePage> {
     _listener = AppLifecycleListener(
       onStateChange: _onStateChanged,
     );
+
+    listener =
+        InternetConnection().onStatusChange.listen((InternetStatus status) {
+      if (status == InternetStatus.disconnected) {
+        // sets the provider vlue
+        ref.read(networkCheckProvider.notifier).state = false;
+        // shows the snabar for no network
+        scaffoldkey.currentState!.showSnackBar(
+          const SnackBar(
+            content: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                Icon(
+                  Icons.wifi_off_outlined,
+                  color: AppColors.primaryTextColor,
+                ),
+                Text("You are offline, Showing outdated data"),
+              ],
+            ),
+            backgroundColor: AppColors.errorColor,
+          ),
+        );
+      } else if (status == InternetStatus.connected) {
+        // if connected sets provider true again
+        ref.read(networkCheckProvider.notifier).state = true;
+      }
+    });
   }
 
   @override
   void dispose() {
     _listener.dispose();
+    listener.cancel();
 
     super.dispose();
   }
@@ -59,6 +93,7 @@ class _HomePageState extends ConsumerState<HomePage> {
   @override
   Widget build(BuildContext context) {
     final String place = ref.watch(placeProvider);
+
     return Scaffold(
       backgroundColor: AppColors.primaryColor,
       body: ResponsiveSafeArea(
