@@ -15,7 +15,7 @@ import 'package:my_weather_app/src/features/weather_forcast/presentation/widgets
 import 'package:my_weather_app/src/features/weather_forcast/presentation/widgets/current_weather.dart';
 import 'package:my_weather_app/src/features/weather_forcast/presentation/widgets/error.dart';
 import 'package:my_weather_app/src/features/weather_forcast/presentation/widgets/future_weather_tile.dart';
-import 'package:my_weather_app/src/features/weather_forcast/presentation/widgets/line_chart.dart';
+import 'package:my_weather_app/src/features/weather_forcast/presentation/widgets/hourly_forcast_chart.dart';
 import 'package:my_weather_app/src/features/weather_forcast/presentation/widgets/loading.dart';
 import 'package:my_weather_app/src/features/weather_forcast/presentation/widgets/logout_btn.dart';
 import 'package:my_weather_app/src/features/weather_forcast/presentation/widgets/sub_heading.dart';
@@ -128,7 +128,51 @@ class _HomePageState extends ConsumerState<HomePage> {
                             padding: EdgeInsets.fromLTRB(size.width * 0.05,
                                 size.height * 0.02, size.width * 0.05, 0),
                             child: SubHeading(
-                                size: size, heading: "Current Forecast"),
+                                size: size, heading: "Today's Forecast"),
+                          ),
+                          Padding(
+                            padding: EdgeInsets.fromLTRB(
+                                size.width * 0.05,
+                                size.height * 0.02,
+                                size.width * 0.05,
+                                size.height * 0.02),
+                            child: Container(
+                              decoration: const BoxDecoration(
+                                  color: AppColors.primaryTransColor,
+                                  borderRadius:
+                                      BorderRadius.all(Radius.circular(15))),
+                              child: Column(
+                                children: [
+                                  const Padding(
+                                    padding: EdgeInsets.only(top: 8.0),
+                                    child: AutoSizeText(
+                                      "Hourly Forcast",
+                                      style: TextStyle(
+                                        fontSize: 18,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    ),
+                                  ),
+                                  SizedBox(
+                                    height: 200,
+                                    width: size.width,
+                                    child: Padding(
+                                      padding: const EdgeInsets.symmetric(
+                                          horizontal: 8, vertical: 0),
+                                      child: SingleChildScrollView(
+                                        scrollDirection: Axis.horizontal,
+                                        child: SizedBox(
+                                          width: 1500,
+                                          child: HourlyForcastChart(
+                                              hourData: data.forecast
+                                                  .forecastday[0].hour),
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
                           ),
                           Padding(
                             padding: EdgeInsets.only(top: size.height * 0.02),
@@ -185,49 +229,6 @@ class _HomePageState extends ConsumerState<HomePage> {
                                             .moonPhase),
                                   ],
                                 ),
-                              ),
-                            ),
-                          ),
-                          Padding(
-                            padding: EdgeInsets.fromLTRB(
-                                size.width * 0.01,
-                                size.height * 0.02,
-                                size.width * 0.01,
-                                size.height * 0.02),
-                            child: Container(
-                              decoration: const BoxDecoration(
-                                  color: AppColors.primaryTransColor,
-                                  borderRadius:
-                                      BorderRadius.all(Radius.circular(15))),
-                              child: Column(
-                                children: [
-                                  const Padding(
-                                    padding: EdgeInsets.only(top: 8.0),
-                                    child: AutoSizeText(
-                                      "Hourly Forcast",
-                                      style: TextStyle(
-                                        fontSize: 20,
-                                        fontWeight: FontWeight.bold,
-                                      ),
-                                    ),
-                                  ),
-                                  SizedBox(
-                                    height: 200,
-                                    width: size.width,
-                                    child: SingleChildScrollView(
-                                      scrollDirection: Axis.horizontal,
-                                      child: SizedBox(
-                                        width: 1500,
-                                        // child: HourlyForcastWidget(
-                                        //   hourData: data.forecast.forecastday[0].hour,
-                                        // ),
-                                        child: LineChartSample2(
-                                            hourData: data
-                                                .forecast.forecastday[0].hour),
-                                      ),
-                                    ),
-                                  ),
-                                ],
                               ),
                             ),
                           ),

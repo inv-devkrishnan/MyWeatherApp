@@ -6,6 +6,6 @@ class ServerException implements Exception {
   @override
   String toString() {
     debugPrint(exception.toString());
-    return "An unexpected error occured";
+    return "Something went wrong";
   }
 }

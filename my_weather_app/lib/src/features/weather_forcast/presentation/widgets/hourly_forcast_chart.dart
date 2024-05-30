@@ -5,9 +5,9 @@ import 'package:my_weather_app/src/core/theme/app_colors.dart';
 import 'package:my_weather_app/src/features/weather_forcast/domain/models/weather_forcast_day_model.dart';
 import 'package:transparent_image/transparent_image.dart';
 
-class LineChartSample2 extends StatelessWidget {
+class HourlyForcastChart extends StatelessWidget {
   final List<Hour> hourData;
-  const LineChartSample2({super.key, required this.hourData});
+  const HourlyForcastChart({super.key, required this.hourData});
 
   @override
   Widget build(BuildContext context) {
@@ -21,11 +21,12 @@ class LineChartSample2 extends StatelessWidget {
 
   Widget bottomTitleWidgets(double value, TitleMeta meta) {
     const style = TextStyle(
+      fontSize: 12,
       fontWeight: FontWeight.bold,
     );
     return SideTitleWidget(
       axisSide: meta.axisSide,
-      space: 4,
+      space: 8,
       child: Column(
         children: [
           if (showChanceOfRain())

@@ -3,6 +3,7 @@ import 'package:my_weather_app/src/core/services/date_formatter.dart';
 import 'package:my_weather_app/src/core/theme/app_colors.dart';
 import 'package:my_weather_app/src/features/weather_forcast/domain/models/weather_data_model.dart';
 import 'package:my_weather_app/src/features/weather_forcast/domain/models/weather_forcast_day_model.dart';
+import 'package:my_weather_app/src/features/weather_forcast/presentation/widgets/hourly_forcast.dart';
 import 'package:transparent_image/transparent_image.dart';
 
 class FutureWeatherTile extends StatefulWidget {
@@ -18,6 +19,8 @@ class _FutureWeatherTileState extends State<FutureWeatherTile> {
   @override
   Widget build(BuildContext context) {
     final Day day = widget.data.forecast.forecastday[widget.index].day;
+    final List<Hour> hourlydata =
+        widget.data.forecast.forecastday[widget.index].hour;
     final Astro astro = widget.data.forecast.forecastday[widget.index].astro;
     return ClipRRect(
       borderRadius: const BorderRadius.all(Radius.circular(15)),
@@ -64,6 +67,13 @@ class _FutureWeatherTileState extends State<FutureWeatherTile> {
           weatherDataItem("Sunrise", astro.sunrise),
           weatherDataItem("Sunset", astro.sunset),
           weatherDataItem("Moon Phase", astro.moonPhase),
+          Padding(
+            padding: const EdgeInsets.only(top: 16.0),
+            child: SizedBox(
+                height: 80,
+                width: MediaQuery.of(context).size.width,
+                child: HourlyForcast(hourData: hourlydata)),
+          )
         ],
       ),
     );

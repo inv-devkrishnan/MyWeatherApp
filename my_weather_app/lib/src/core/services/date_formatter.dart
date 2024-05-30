@@ -12,5 +12,5 @@ class DateFormatter {
   }
 
   static String formatTime(DateTime dateTime) =>
-      DateFormat('HH:mm').format(dateTime);
+      DateFormat('hh:mm a').format(dateTime);
 }
