@@ -12,7 +12,6 @@ import 'package:my_weather_app/src/features/location_change/data/favorites_repos
 import 'package:my_weather_app/src/features/location_change/domain/favorites_repository.dart';
 import 'package:my_weather_app/src/features/location_change/domain/models/favorite_location_model.dart';
 import 'package:my_weather_app/src/features/weather_forcast/presentation/providers/location_list_provider.dart';
-import 'package:my_weather_app/src/features/weather_forcast/presentation/providers/location_provider.dart';
 
 import '../../../../core/globals/global_keys.dart';
 
@@ -42,9 +41,10 @@ class FavoriteController extends StateNotifier<AsyncValue<void>> {
     state = await AsyncValue.guard(
         () => favoriteRepository.addToFavorites(locationName));
     if (context.mounted && !state.hasError) {
-      ref.read(placeProvider.notifier).state = locationName;
-      context.maybePop();
+      // ref.read(placeProvider.notifier).state = locationName;
+      // context.maybePop();  // also loads the favorite weather
       ref.invalidate(locationListProvider);
+      scaffoldkey.currentState!.hideCurrentSnackBar();
       scaffoldkey.currentState!.showSnackBar(
         SnackBar(
           content: Wrap(
@@ -68,6 +68,7 @@ class FavoriteController extends StateNotifier<AsyncValue<void>> {
       );
     } else if (context.mounted && state.hasError) {
       // if state ends up in error
+      scaffoldkey.currentState!.hideCurrentSnackBar();
       scaffoldkey.currentState!.showSnackBar(
         SnackBar(
           content: Text(state.error.toString()),
@@ -90,6 +91,7 @@ class FavoriteController extends StateNotifier<AsyncValue<void>> {
       ref.invalidate(favoriteListProvider);
       ref.invalidate(locationListProvider);
       context.maybePop();
+      scaffoldkey.currentState!.hideCurrentSnackBar();
       scaffoldkey.currentState!.showSnackBar(
         SnackBar(
           content: Wrap(
@@ -111,6 +113,7 @@ class FavoriteController extends StateNotifier<AsyncValue<void>> {
       );
     } else if (context.mounted && !state.hasError) {
       // if state ends up in error
+      scaffoldkey.currentState!.hideCurrentSnackBar();
       scaffoldkey.currentState!.showSnackBar(
         SnackBar(
           content: Text(

@@ -47,23 +47,30 @@ class _SetLocationPageState extends ConsumerState<SetLocationPage> {
                           child: ListView.builder(
                               itemCount: data.places.length,
                               itemBuilder: (context, index) {
-                                return ListTile(
-                                  leading: const Icon(
-                                    Icons.location_on,
-                                    color: AppColors.primaryTextColor,
-                                  ),
-                                  title: Text(
-                                    data.places[index],
-                                    style: const TextStyle(
-                                        color: AppColors.primaryTextColor),
-                                  ),
-                                  trailing: FavBtn(data.places[index]),
-                                  onTap: () {
-                                    ref.read(placeProvider.notifier).state =
-                                        data.places[index];
+                                return Column(
+                                  children: [
+                                    ListTile(
+                                      leading: const Icon(
+                                        Icons.location_on,
+                                        color: AppColors.primaryTextColor,
+                                      ),
+                                      title: Text(
+                                        data.places[index],
+                                        style: const TextStyle(
+                                            color: AppColors.primaryTextColor),
+                                      ),
+                                      trailing: FavBtn(data.places[index]),
+                                      onTap: () {
+                                        ref.read(placeProvider.notifier).state =
+                                            data.places[index];
 
-                                    AutoRouter.of(context).maybePop();
-                                  },
+                                        AutoRouter.of(context).maybePop();
+                                      },
+                                    ),
+                                    const Divider(
+                                      color: Color.fromARGB(255, 40, 40, 40),
+                                    )
+                                  ],
                                 );
                               }),
                         ),
