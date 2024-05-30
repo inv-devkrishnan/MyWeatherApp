@@ -15,7 +15,7 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await InitDependencies.initFirebase(); // initialize firebase auth
   db = await DatabaseHelper.instance.database; // initialize db
-  InitDependencies.setDeviceOrientation(); // sets device orientation
+  // InitDependencies.setDeviceOrientation(); // sets device orientation
   InitDependencies(Dio()).initLocationList(); // gets location list
   runApp(const ProviderScope(child: MyApp()));
 }

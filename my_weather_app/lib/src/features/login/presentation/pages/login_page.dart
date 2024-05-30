@@ -25,39 +25,54 @@ class LoginPage extends StatelessWidget {
                     child: Column(
                       children: [
                         SizedBox(
-                          height: size.height * 0.8,
+                          height: size.height * 0.7,
+                          width: size.width,
                           child: Column(
                             children: [
                               Lottie.asset(
                                 "assets/animation/sun_cloud_anim.json",
+                                height: size.height * 0.5,
+                                width: size.height * 0.5,
                               ),
-                              const Align(
-                                alignment: Alignment.center,
-                                child: AutoSizeText(
-                                  textAlign: TextAlign.center,
-                                  "MyWeatherApp",
-                                  maxFontSize: 48,
-                                  maxLines: 1,
-                                  style: TextStyle(
-                                    fontSize: 42,
-                                    color: Colors.white,
-                                    fontWeight: FontWeight.bold,
+                              SizedBox(
+                                height: size.height * 0.1,
+                                width: size.width,
+                                child: const Align(
+                                  alignment: Alignment.center,
+                                  child: AutoSizeText(
+                                    textAlign: TextAlign.center,
+                                    "MyWeatherApp",
+                                    maxFontSize: 48,
+                                    maxLines: 1,
+                                    style: TextStyle(
+                                      fontSize: 42,
+                                      color: Colors.white,
+                                      fontWeight: FontWeight.bold,
+                                    ),
                                   ),
                                 ),
                               ),
-                              const Text(
-                                "Sign in to continue",
-                                style: TextStyle(
-                                    color: Colors.white, fontSize: 16),
+                              SizedBox(
+                                height: size.height * 0.1,
+                                child: const AutoSizeText(
+                                  maxLines: 1,
+                                  "Sign in to continue",
+                                  style: TextStyle(
+                                      color: Colors.white, fontSize: 16),
+                                ),
                               ),
                             ],
                           ),
                         ),
-                        Padding(
-                          padding: EdgeInsets.only(bottom: size.height * 0.05),
-                          child: const Align(
-                            alignment: Alignment.bottomCenter,
-                            child: GoogleSignInButton(),
+                        SizedBox(
+                          height: size.height * 0.2,
+                          child: Padding(
+                            padding:
+                                EdgeInsets.only(bottom: size.height * 0.05),
+                            child: const Align(
+                              alignment: Alignment.bottomCenter,
+                              child: GoogleSignInButton(),
+                            ),
                           ),
                         )
                       ],
