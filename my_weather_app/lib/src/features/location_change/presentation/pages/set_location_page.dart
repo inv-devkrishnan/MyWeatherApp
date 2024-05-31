@@ -29,21 +29,24 @@ class _SetLocationPageState extends ConsumerState<SetLocationPage> {
           builder: (context, size) => Column(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  ListTile(
-                    leading: const Icon(
-                      Icons.location_searching_outlined,
-                      color: AppColors.primaryTextColor,
+                  SizedBox(
+                    height: size.height * 0.15,
+                    child: ListTile(
+                      leading: const Icon(
+                        Icons.location_searching_outlined,
+                        color: AppColors.primaryTextColor,
+                      ),
+                      title: const Text("Current Location",
+                          style: TextStyle(color: AppColors.primaryTextColor)),
+                      onTap: () {
+                        ref.read(placeProvider.notifier).state = ":loc";
+                        AutoRouter.of(context).maybePop();
+                      },
                     ),
-                    title: const Text("Current Location",
-                        style: TextStyle(color: AppColors.primaryTextColor)),
-                    onTap: () {
-                      ref.read(placeProvider.notifier).state = ":loc";
-                      AutoRouter.of(context).maybePop();
-                    },
                   ),
                   ref.watch(locationListProvider).when(
                         data: (data) => SizedBox(
-                          height: size.height * 0.9,
+                          height: size.height * 0.85,
                           child: ListView.builder(
                               itemCount: data.places.length,
                               itemBuilder: (context, index) {

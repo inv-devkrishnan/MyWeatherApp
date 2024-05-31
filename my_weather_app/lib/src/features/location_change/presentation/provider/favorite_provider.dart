@@ -47,19 +47,25 @@ class FavoriteController extends StateNotifier<AsyncValue<void>> {
       scaffoldkey.currentState!.hideCurrentSnackBar();
       scaffoldkey.currentState!.showSnackBar(
         SnackBar(
-          content: Wrap(
+          content: Row(
             children: [
-              const Padding(
-                padding: EdgeInsets.symmetric(horizontal: 10, vertical: 0),
-                child: Icon(
-                  Icons.favorite,
-                  color: AppColors.primaryColor,
+              SizedBox(
+                width: MediaQuery.of(context).size.width * 0.1,
+                child: const Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 8, vertical: 0),
+                  child: Icon(Icons.favorite, color: AppColors.primaryColor),
                 ),
               ),
-              Text(
-                "$locationName added to favorties",
-                style: const TextStyle(
-                    color: AppColors.primaryColor, fontWeight: FontWeight.bold),
+              SizedBox(
+                width: MediaQuery.of(context).size.width * 0.7,
+                child: AutoSizeText(
+                  "$locationName added to favorties",
+                  maxLines: 2,
+                  minFontSize: 5,
+                  style: const TextStyle(
+                    color: AppColors.primaryColor,
+                  ),
+                ),
               ),
             ],
           ),
@@ -94,17 +100,26 @@ class FavoriteController extends StateNotifier<AsyncValue<void>> {
       scaffoldkey.currentState!.hideCurrentSnackBar();
       scaffoldkey.currentState!.showSnackBar(
         SnackBar(
-          content: Wrap(
+          content: Row(
             children: [
-              const Padding(
-                padding: EdgeInsets.symmetric(vertical: 0, horizontal: 10),
-                child:
-                    Icon(Icons.heart_broken, color: AppColors.primaryTextColor),
+              SizedBox(
+                width: MediaQuery.of(context).size.width * 0.1,
+                child: const Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 8, vertical: 0),
+                  child: Icon(Icons.heart_broken,
+                      color: AppColors.primaryTextColor),
+                ),
               ),
-              AutoSizeText(
-                "$locationName removed from favorties",
-                style: AppTheme.snackbarStyle(),
-                maxLines: 3,
+              SizedBox(
+                width: MediaQuery.of(context).size.width * 0.7,
+                child: AutoSizeText(
+                  "$locationName removed from favorties",
+                  maxLines: 2,
+                  minFontSize: 5,
+                  style: const TextStyle(
+                    color: AppColors.primaryTextColor,
+                  ),
+                ),
               ),
             ],
           ),
