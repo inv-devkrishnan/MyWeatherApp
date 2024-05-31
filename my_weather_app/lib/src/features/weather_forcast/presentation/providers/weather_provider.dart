@@ -2,6 +2,7 @@ import 'dart:async';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:my_weather_app/main.dart';
 import 'package:my_weather_app/src/core/config/config.dart';
 import 'package:my_weather_app/src/core/services/geo_location.dart';
 import 'package:my_weather_app/src/features/weather_forcast/data/weather_repository_data_source.dart';
@@ -47,7 +48,7 @@ final weatherProvider =
   final streamController = StreamController<WeatherData>();
 
   void startStream() async {
-    while (!streamController.isClosed) {
+    while (!streamController.isClosed && !MyApp.isAppPaused) {
       try {
         SharedPreferences prefs = await SharedPreferences.getInstance();
         final weatherData =

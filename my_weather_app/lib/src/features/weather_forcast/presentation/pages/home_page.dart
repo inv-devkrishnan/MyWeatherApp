@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:internet_connection_checker_plus/internet_connection_checker_plus.dart';
+import 'package:my_weather_app/main.dart';
 import 'package:my_weather_app/src/core/responsive/safe_area.dart';
 import 'package:my_weather_app/src/core/theme/app_colors.dart';
 import 'package:my_weather_app/src/features/weather_forcast/presentation/providers/network_check_profile.dart';
@@ -86,10 +87,12 @@ class _HomePageState extends ConsumerState<HomePage> {
   void _onStateChanged(AppLifecycleState state) {
     debugPrint("current app state : ${state.name}");
     if (state == AppLifecycleState.paused) {
+      MyApp.isAppPaused = true;
       isPaused = true;
     }
     if (state == AppLifecycleState.resumed && isPaused) {
       _onResumed();
+      MyApp.isAppPaused = false;
       isPaused = false;
     }
   }
