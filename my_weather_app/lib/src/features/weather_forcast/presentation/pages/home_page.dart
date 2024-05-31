@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:auto_route/auto_route.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:internet_connection_checker_plus/internet_connection_checker_plus.dart';
 import 'package:my_weather_app/src/core/responsive/safe_area.dart';
@@ -36,6 +37,7 @@ class HomePage extends ConsumerStatefulWidget {
 class _HomePageState extends ConsumerState<HomePage> {
   late final AppLifecycleListener _listener;
   late final StreamSubscription<InternetStatus> listener;
+  bool isPaused = false;
   String? loadLocation;
   @override
   void initState() {
@@ -82,13 +84,17 @@ class _HomePageState extends ConsumerState<HomePage> {
   }
 
   void _onStateChanged(AppLifecycleState state) {
-    if (state == AppLifecycleState.resumed) {
+    debugPrint("current app state : ${state.name}");
+    if (state == AppLifecycleState.paused) {
+      isPaused = true;
+    }
+    if (state == AppLifecycleState.resumed && isPaused) {
       _onResumed();
+      isPaused = false;
     }
   }
 
   void _onResumed() {
-    debugPrint("App resumed");
     ref.invalidate(weatherProvider);
   }
 
