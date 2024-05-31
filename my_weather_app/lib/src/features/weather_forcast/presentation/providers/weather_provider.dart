@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'package:dio/dio.dart';
+import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:my_weather_app/src/core/config/config.dart';
 import 'package:my_weather_app/src/core/services/geo_location.dart';
@@ -19,24 +20,52 @@ import 'package:shared_preferences/shared_preferences.dart';
 //   ).getCurrentWeather(location);
 // });
 
+// final weatherProvider =
+//     StreamProvider.family.autoDispose<WeatherData, String?>((ref, location) {
+//   // Stream that emits new weather data periodically
+//   Stream<WeatherData> weatherStream() async* {
+//     while (true) {
+//       try {
+//         SharedPreferences prefs = await SharedPreferences.getInstance();
+//         final weatherData =
+//             await WeatherRepositoryImpl(Dio(), GeoLocation(), prefs)
+//                 .getCurrentWeather(location);
+//         yield weatherData;
+//       } catch (e) {
+//         // Handle error appropriately
+//         yield* Stream.error(e);
+//       }
+//       await Future.delayed(updateDuration); // emits according to updateDuration
+//     }
+//   }
+
+//   return weatherStream();
+// });
+
 final weatherProvider =
     StreamProvider.family.autoDispose<WeatherData, String?>((ref, location) {
-  // Stream that emits new weather data periodically
-  Stream<WeatherData> weatherStream() async* {
-    while (true) {
+  final streamController = StreamController<WeatherData>();
+
+  void startStream() async {
+    while (!streamController.isClosed) {
       try {
         SharedPreferences prefs = await SharedPreferences.getInstance();
         final weatherData =
             await WeatherRepositoryImpl(Dio(), GeoLocation(), prefs)
                 .getCurrentWeather(location);
-        yield weatherData;
+        streamController.add(weatherData);
       } catch (e) {
-        // Handle error appropriately
-        yield* Stream.error(e);
+        // streamController.addError(e);
+        debugPrint(e.toString());
       }
-      await Future.delayed(updateDuration); // emits according to updateDuration
+      await Future.delayed(updateDuration);
     }
   }
 
-  return weatherStream();
+  ref.onDispose(() {
+    streamController.close();
+  });
+
+  startStream();
+  return streamController.stream;
 });
