@@ -50,7 +50,7 @@ class _HomePageState extends ConsumerState<HomePage> {
     listener =
         InternetConnection().onStatusChange.listen((InternetStatus status) {
       if (status == InternetStatus.disconnected) {
-        // sets the provider vlue
+        // sets the provider value
         ref.read(networkCheckProvider.notifier).state = false;
         // shows the snabar for no network
         showOfflineSnackBar();
@@ -82,6 +82,7 @@ class _HomePageState extends ConsumerState<HomePage> {
   }
 
   void _onResumed() {
+    // once app is resumed from background reload the provider
     ref.invalidate(weatherProvider);
   }
 

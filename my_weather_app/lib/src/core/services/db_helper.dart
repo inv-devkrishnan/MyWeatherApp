@@ -2,6 +2,7 @@ import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
 
 class DatabaseHelper {
+  // class that helps to establish db connection and create db tables
   static const _databaseName = "myDatabase.db";
   static const _databaseVersion = 1;
 

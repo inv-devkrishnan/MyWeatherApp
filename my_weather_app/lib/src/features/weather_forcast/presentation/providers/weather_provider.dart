@@ -56,8 +56,12 @@ final weatherProvider =
                 .getCurrentWeather(location);
         streamController.add(weatherData);
       } catch (e) {
-        // streamController.addError(e);
-        debugPrint(e.toString());
+        if (e is StateError) {
+          debugPrint(
+              "State Error Occured"); // handling state error which occur's when autorefresh and change location called simulataniously
+        } else {
+          streamController.addError(e);
+        }
       }
       await Future.delayed(updateDuration);
     }
