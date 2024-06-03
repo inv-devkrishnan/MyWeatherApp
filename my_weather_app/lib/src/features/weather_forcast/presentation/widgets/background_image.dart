@@ -10,6 +10,7 @@ class BackgroundImage extends StatelessWidget {
     return Stack(
       children: [
         FadeInImage(
+          key: ValueKey(backgroundImagePath),
           placeholder: MemoryImage(kTransparentImage),
           image: AssetImage(backgroundImagePath),
           fit: BoxFit.fill,
