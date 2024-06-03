@@ -61,50 +61,55 @@ class _BottomCardSheetState extends ConsumerState<BottomCardSheet> {
                                       child: Text("No favorites"),
                                     )
                                   : SingleChildScrollView(
-                                      child: Wrap(
-                                        children: [
-                                          for (FavoriteLocation item in data)
-                                            Padding(
-                                              padding:
-                                                  const EdgeInsets.symmetric(
-                                                      horizontal: 4,
-                                                      vertical: 0),
-                                              child: InputChip(
-                                                label: Text(item.locationName),
-                                                onPressed: item.deleted
-                                                    ? () => Fluttertoast.showToast(
-                                                        msg:
-                                                            "This location is currently unavailable",
-                                                        toastLength:
-                                                            Toast.LENGTH_SHORT,
-                                                        gravity:
-                                                            ToastGravity.BOTTOM,
-                                                        timeInSecForIosWeb: 1,
-                                                        backgroundColor: AppColors
-                                                            .primaryTextColor,
-                                                        textColor: AppColors
-                                                            .primaryColor,
-                                                        fontSize: 16.0)
-                                                    : () {
-                                                        ref
-                                                                .read(placeProvider
-                                                                    .notifier)
-                                                                .state =
-                                                            item.locationName;
-                                                        context.maybePop();
-                                                      },
-                                                onDeleted: () => {
-                                                  ref
-                                                      .read(
-                                                          favoriteControllerProvider
-                                                              .notifier)
-                                                      .removefromFavorite(
-                                                          context,
-                                                          item.locationName)
-                                                },
-                                              ),
-                                            )
-                                        ],
+                                      child: Padding(
+                                        padding: const EdgeInsets.symmetric(
+                                            horizontal: 8, vertical: 0),
+                                        child: Wrap(
+                                          children: [
+                                            for (FavoriteLocation item in data)
+                                              Padding(
+                                                padding:
+                                                    const EdgeInsets.symmetric(
+                                                        horizontal: 4,
+                                                        vertical: 0),
+                                                child: InputChip(
+                                                  label:
+                                                      Text(item.locationName),
+                                                  onPressed: item.deleted
+                                                      ? () => Fluttertoast.showToast(
+                                                          msg:
+                                                              "This location is currently unavailable",
+                                                          toastLength: Toast
+                                                              .LENGTH_SHORT,
+                                                          gravity: ToastGravity
+                                                              .BOTTOM,
+                                                          timeInSecForIosWeb: 1,
+                                                          backgroundColor: AppColors
+                                                              .primaryTextColor,
+                                                          textColor: AppColors
+                                                              .primaryColor,
+                                                          fontSize: 16.0)
+                                                      : () {
+                                                          ref
+                                                                  .read(placeProvider
+                                                                      .notifier)
+                                                                  .state =
+                                                              item.locationName;
+                                                          context.maybePop();
+                                                        },
+                                                  onDeleted: () => {
+                                                    ref
+                                                        .read(
+                                                            favoriteControllerProvider
+                                                                .notifier)
+                                                        .removefromFavorite(
+                                                            context,
+                                                            item.locationName)
+                                                  },
+                                                ),
+                                              )
+                                          ],
+                                        ),
                                       ),
                                     ),
                               loading: () => const Center(
