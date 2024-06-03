@@ -3,7 +3,6 @@ import 'dart:async';
 import 'package:auto_route/auto_route.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:internet_connection_checker_plus/internet_connection_checker_plus.dart';
 import 'package:my_weather_app/main.dart';
@@ -38,7 +37,7 @@ class HomePage extends ConsumerStatefulWidget {
 class _HomePageState extends ConsumerState<HomePage> {
   late final AppLifecycleListener _listener;
   late final StreamSubscription<InternetStatus> listener;
-  bool isPaused = false;
+
   String? loadLocation;
   @override
   void initState() {
@@ -54,21 +53,7 @@ class _HomePageState extends ConsumerState<HomePage> {
         // sets the provider vlue
         ref.read(networkCheckProvider.notifier).state = false;
         // shows the snabar for no network
-        scaffoldkey.currentState!.showSnackBar(
-          const SnackBar(
-            content: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                Icon(
-                  Icons.wifi_off_outlined,
-                  color: AppColors.primaryTextColor,
-                ),
-                Text("You are offline, Showing outdated data"),
-              ],
-            ),
-            backgroundColor: AppColors.errorColor,
-          ),
-        );
+        showOfflineSnackBar();
       } else if (status == InternetStatus.connected) {
         // if connected sets provider true again
         ref.read(networkCheckProvider.notifier).state = true;
@@ -85,20 +70,40 @@ class _HomePageState extends ConsumerState<HomePage> {
   }
 
   void _onStateChanged(AppLifecycleState state) {
+    // execute when app state changes
     debugPrint("current app state : ${state.name}");
     if (state == AppLifecycleState.paused) {
-      MyApp.isAppPaused = true;
-      isPaused = true;
+      MyApp.isAppPaused = true; // sets pause global variable true
     }
-    if (state == AppLifecycleState.resumed && isPaused) {
+    if (state == AppLifecycleState.resumed && MyApp.isAppPaused) {
       _onResumed();
       MyApp.isAppPaused = false;
-      isPaused = false;
     }
   }
 
   void _onResumed() {
     ref.invalidate(weatherProvider);
+  }
+
+  ScaffoldFeatureController showOfflineSnackBar() {
+    scaffoldkey.currentState!.clearSnackBars();
+    return scaffoldkey.currentState!.showSnackBar(
+      const SnackBar(
+        content: Row(
+          children: [
+            Padding(
+              padding: EdgeInsets.symmetric(horizontal: 8, vertical: 0),
+              child: Icon(
+                Icons.wifi_off_outlined,
+                color: AppColors.primaryTextColor,
+              ),
+            ),
+            Text("You are offline, Showing outdated data"),
+          ],
+        ),
+        backgroundColor: AppColors.errorColor,
+      ),
+    );
   }
 
   @override
@@ -116,156 +121,166 @@ class _HomePageState extends ConsumerState<HomePage> {
                       backgroundImagePath: WeatherImage.getWeatherImage(
                           data.current.weatherCondition.code),
                     ),
-                    SingleChildScrollView(
-                      child: Column(
-                        children: [
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              ChangeLocationBtn(
-                                size: size,
-                              ),
-                              const LogoutBtn(),
-                            ],
-                          ),
-                          Padding(
-                            padding: EdgeInsets.fromLTRB(size.width * 0.05,
-                                size.height * 0.02, size.width * 0.05, 0),
-                            child: CurrentWeather(size: size, data: data),
-                          ),
-                          Padding(
-                            padding: EdgeInsets.fromLTRB(size.width * 0.05,
-                                size.height * 0.02, size.width * 0.05, 0),
-                            child: SubHeading(
-                                size: size, heading: "Today's Forecast"),
-                          ),
-                          Padding(
-                            padding: EdgeInsets.fromLTRB(
-                                size.width * 0.05,
-                                size.height * 0.02,
-                                size.width * 0.05,
-                                size.height * 0.02),
-                            child: Container(
-                              decoration: const BoxDecoration(
-                                  color: AppColors.primaryTransColor,
-                                  borderRadius:
-                                      BorderRadius.all(Radius.circular(15))),
-                              child: Column(
-                                children: [
-                                  const Padding(
-                                    padding: EdgeInsets.only(top: 8.0),
-                                    child: AutoSizeText(
-                                      "Hourly Forcast",
-                                      style: TextStyle(
-                                        fontSize: 18,
-                                        fontWeight: FontWeight.bold,
-                                      ),
-                                    ),
-                                  ),
-                                  SizedBox(
-                                    height: 200,
-                                    width: size.width,
-                                    child: Padding(
-                                      padding: const EdgeInsets.symmetric(
-                                          horizontal: 8, vertical: 0),
-                                      child: SingleChildScrollView(
-                                        scrollDirection: Axis.horizontal,
-                                        child: SizedBox(
-                                          width: 1500,
-                                          child: HourlyForcastChart(
-                                              hourData: data.forecast
-                                                  .forecastday[0].hour),
+                    RefreshIndicator(
+                      backgroundColor: AppColors.primaryColor,
+                      color: AppColors.primaryTextColor,
+                      onRefresh: ref.watch(networkCheckProvider)
+                          ? () => ref.refresh(weatherProvider(place).future)
+                          : () async => showOfflineSnackBar(),
+                      child: SingleChildScrollView(
+                        child: Column(
+                          children: [
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                ChangeLocationBtn(
+                                  size: size,
+                                ),
+                                const LogoutBtn(),
+                              ],
+                            ),
+                            Padding(
+                              padding: EdgeInsets.fromLTRB(size.width * 0.05,
+                                  size.height * 0.02, size.width * 0.05, 0),
+                              child: CurrentWeather(size: size, data: data),
+                            ),
+                            Padding(
+                              padding: EdgeInsets.fromLTRB(size.width * 0.05,
+                                  size.height * 0.02, size.width * 0.05, 0),
+                              child: SubHeading(
+                                  size: size, heading: "Today's Forecast"),
+                            ),
+                            Padding(
+                              padding: EdgeInsets.fromLTRB(
+                                  size.width * 0.05,
+                                  size.height * 0.02,
+                                  size.width * 0.05,
+                                  size.height * 0.02),
+                              child: Container(
+                                decoration: const BoxDecoration(
+                                    color: AppColors.primaryTransColor,
+                                    borderRadius:
+                                        BorderRadius.all(Radius.circular(15))),
+                                child: Column(
+                                  children: [
+                                    const Padding(
+                                      padding: EdgeInsets.only(top: 8.0),
+                                      child: AutoSizeText(
+                                        "Hourly Forcast",
+                                        style: TextStyle(
+                                          fontSize: 18,
+                                          fontWeight: FontWeight.bold,
                                         ),
                                       ),
                                     ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ),
-                          Padding(
-                            padding: EdgeInsets.only(top: size.height * 0.02),
-                            child: SizedBox(
-                              width: size.width,
-                              height: 120,
-                              child: Center(
-                                child: ListView(
-                                  shrinkWrap: true,
-                                  scrollDirection: Axis.horizontal,
-                                  children: [
-                                    WeatherInfoBlocks(
-                                        size: size,
-                                        imagePath: "assets/images/wind.svg",
-                                        heading: "Wind",
-                                        body:
-                                            "${data.current.windSpeed} km/h , ${data.current.windDirection}"),
-                                    WeatherInfoBlocks(
-                                        size: size,
-                                        imagePath:
-                                            "assets/images/precipitation.svg",
-                                        heading: "Precipitation",
-                                        body:
-                                            "${data.current.precipitation} mm"),
-                                    WeatherInfoBlocks(
-                                        size: size,
-                                        imagePath: "assets/images/uv_index.svg",
-                                        heading: "UV Index",
-                                        body: "${data.current.uv}"),
-                                    WeatherInfoBlocks(
-                                        size: size,
-                                        imagePath: "assets/images/rain.svg",
-                                        heading: "Chance of rain",
-                                        body:
-                                            "${data.forecast.forecastday[0].day.chanceOfRain} %"),
-                                    WeatherInfoBlocks(
-                                        size: size,
-                                        imagePath: "assets/images/sun_rise.svg",
-                                        heading: "Sunrise",
-                                        body: data.forecast.forecastday[0].astro
-                                            .sunrise),
-                                    WeatherInfoBlocks(
-                                        size: size,
-                                        imagePath: "assets/images/sun_set.svg",
-                                        heading: "Sunset",
-                                        body: data.forecast.forecastday[0].astro
-                                            .sunset),
-                                    WeatherInfoBlocks(
-                                        size: size,
-                                        imagePath:
-                                            "assets/images/moon_phase.svg",
-                                        heading: "Moon Phase",
-                                        body: data.forecast.forecastday[0].astro
-                                            .moonPhase),
+                                    SizedBox(
+                                      height: 200,
+                                      width: size.width,
+                                      child: Padding(
+                                        padding: const EdgeInsets.symmetric(
+                                            horizontal: 8, vertical: 0),
+                                        child: SingleChildScrollView(
+                                          scrollDirection: Axis.horizontal,
+                                          child: SizedBox(
+                                            width: 1500,
+                                            child: HourlyForcastChart(
+                                                hourData: data.forecast
+                                                    .forecastday[0].hour),
+                                          ),
+                                        ),
+                                      ),
+                                    ),
                                   ],
                                 ),
                               ),
                             ),
-                          ),
-                          Padding(
-                            padding: EdgeInsets.fromLTRB(size.width * 0.05,
-                                size.height * 0.02, size.width * 0.05, 0),
-                            child: SubHeading(
-                                size: size, heading: "Future Forecast"),
-                          ),
-                          Padding(
-                            padding: EdgeInsets.fromLTRB(size.width * 0.05,
-                                size.height * 0.02, size.width * 0.05, 0),
-                            child: FutureWeatherTile(data: data, index: 1),
-                          ),
-                          Padding(
-                            padding: EdgeInsets.fromLTRB(size.width * 0.05,
-                                size.height * 0.02, size.width * 0.05, 0),
-                            child: FutureWeatherTile(data: data, index: 2),
-                          ),
-                          Padding(
-                            padding: EdgeInsets.fromLTRB(
-                                size.width * 0.05,
-                                size.height * 0.02,
-                                size.width * 0.05,
-                                size.height * 0.02),
-                            child: FutureWeatherTile(data: data, index: 3),
-                          ),
-                        ],
+                            Padding(
+                              padding: EdgeInsets.only(top: size.height * 0.02),
+                              child: SizedBox(
+                                width: size.width,
+                                height: 120,
+                                child: Center(
+                                  child: ListView(
+                                    shrinkWrap: true,
+                                    scrollDirection: Axis.horizontal,
+                                    children: [
+                                      WeatherInfoBlocks(
+                                          size: size,
+                                          imagePath: "assets/images/wind.svg",
+                                          heading: "Wind",
+                                          body:
+                                              "${data.current.windSpeed} km/h , ${data.current.windDirection}"),
+                                      WeatherInfoBlocks(
+                                          size: size,
+                                          imagePath:
+                                              "assets/images/precipitation.svg",
+                                          heading: "Precipitation",
+                                          body:
+                                              "${data.current.precipitation} mm"),
+                                      WeatherInfoBlocks(
+                                          size: size,
+                                          imagePath:
+                                              "assets/images/uv_index.svg",
+                                          heading: "UV Index",
+                                          body: "${data.current.uv}"),
+                                      WeatherInfoBlocks(
+                                          size: size,
+                                          imagePath: "assets/images/rain.svg",
+                                          heading: "Chance of rain",
+                                          body:
+                                              "${data.forecast.forecastday[0].day.chanceOfRain} %"),
+                                      WeatherInfoBlocks(
+                                          size: size,
+                                          imagePath:
+                                              "assets/images/sun_rise.svg",
+                                          heading: "Sunrise",
+                                          body: data.forecast.forecastday[0]
+                                              .astro.sunrise),
+                                      WeatherInfoBlocks(
+                                          size: size,
+                                          imagePath:
+                                              "assets/images/sun_set.svg",
+                                          heading: "Sunset",
+                                          body: data.forecast.forecastday[0]
+                                              .astro.sunset),
+                                      WeatherInfoBlocks(
+                                          size: size,
+                                          imagePath:
+                                              "assets/images/moon_phase.svg",
+                                          heading: "Moon Phase",
+                                          body: data.forecast.forecastday[0]
+                                              .astro.moonPhase),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                            ),
+                            Padding(
+                              padding: EdgeInsets.fromLTRB(size.width * 0.05,
+                                  size.height * 0.02, size.width * 0.05, 0),
+                              child: SubHeading(
+                                  size: size, heading: "Future Forecast"),
+                            ),
+                            Padding(
+                              padding: EdgeInsets.fromLTRB(size.width * 0.05,
+                                  size.height * 0.02, size.width * 0.05, 0),
+                              child: FutureWeatherTile(data: data, index: 1),
+                            ),
+                            Padding(
+                              padding: EdgeInsets.fromLTRB(size.width * 0.05,
+                                  size.height * 0.02, size.width * 0.05, 0),
+                              child: FutureWeatherTile(data: data, index: 2),
+                            ),
+                            Padding(
+                              padding: EdgeInsets.fromLTRB(
+                                  size.width * 0.05,
+                                  size.height * 0.02,
+                                  size.width * 0.05,
+                                  size.height * 0.02),
+                              child: FutureWeatherTile(data: data, index: 3),
+                            ),
+                          ],
+                        ),
                       ),
                     ),
                   ]);
