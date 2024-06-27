@@ -268,17 +268,12 @@ class _HomePageState extends ConsumerState<HomePage> {
                               child: FutureWeatherTile(data: data, index: 1),
                             ),
                             Padding(
-                              padding: EdgeInsets.fromLTRB(size.width * 0.05,
-                                  size.height * 0.02, size.width * 0.05, 0),
-                              child: FutureWeatherTile(data: data, index: 2),
-                            ),
-                            Padding(
                               padding: EdgeInsets.fromLTRB(
                                   size.width * 0.05,
                                   size.height * 0.02,
                                   size.width * 0.05,
                                   size.height * 0.02),
-                              child: FutureWeatherTile(data: data, index: 3),
+                              child: FutureWeatherTile(data: data, index: 2),
                             ),
                           ],
                         ),

@@ -36,7 +36,7 @@ class WeatherRepositoryImpl implements WeatherRepository {
         final response = await dio.get(weatherAPIURL, queryParameters: {
           "key": weatherAPIkey,
           "q": currentLocation,
-          "days": 4
+          "days": 3
         });
 
         debugPrint("Weather api call recieved on ${response.headers["Date"]}");
